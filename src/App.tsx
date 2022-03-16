@@ -1,35 +1,23 @@
 import React, { Component	} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Users from './pages/users';
+import axios from 'axios';
 
-class App extends React.Component<any, any> {
+export default class App extends React.Component {
 
-  constructor(props: any) {
-    super(props);
-    this.state = { apiResponse: "" };
-}
+render() { 
 
-callAPI() {
-    fetch("http://localhost:9000/testBackend")
-        .then(res => res.text())
-        .then(res => this.setState({ apiResponse: res }));
-}
-
-componentWillMount() {
-    this.callAPI();
-}
-
-render() {
   return (
-    <header>
-      <div>
-    <h1>Hello world!</h1>
-    <p className="app">{this.state.apiResponse}</p>
-    </div>
-    </header>
-  );
-}
+
+    <Users />
+      );
+
 
 }
 
-export default App;
+ 
+
+}
+
+
