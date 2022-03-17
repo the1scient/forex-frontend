@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import {Link} from 'react-router-dom';
 import '../styles/Users.css';
 
-let backEndHost = 'http://35.198.44.247:9000';
+var data = require('../settings.json');
+let backEndHost = data['backendhost'];
 
 export function Users() {
 
@@ -12,7 +13,7 @@ export function Users() {
     useEffect(() => {
       const fetchUsers = async () => {
 
-        const response = await fetch(`${backEndHost}/users`);
+        const response = await fetch(`${backEndHost}users`);
         const usersData = await response.json();
         setUsers(usersData);
       };
@@ -21,15 +22,13 @@ export function Users() {
   
   const useDatas = users.map((user)=> {
       return <tr>
-                <td>{user.name}</td>
-                <td>{user.age}</td>
-            </tr>
-           
+          <td className="col-md-4"><Link to={`/user/` + user._id}>{user._id}</Link></td>
+                <td className="col-md-6">{user.name}</td>
+                 <td className="col-md-4">{user.password}</td>
+                <td className="col-md-2">{user.age}</td>
 
-     
-      
-  
-    })
+            </tr>
+    });
   
     return (
       <div className="container">
@@ -38,7 +37,9 @@ export function Users() {
             <table>
         <thead>
             <tr>
+                <th>#ID</th>
                 <th>Name</th>
+                <th>Password</th>
                 <th>Age</th>
             </tr>
         
