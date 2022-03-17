@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import '../App.css';
+import '../styles/Users.css';
 
 let backEndHost = 'http://35.198.44.247:9000';
 
-function Users() {
+export function Users() {
 
     
     const [users, setUsers] = useState<any[]>( [] );
@@ -32,7 +32,7 @@ function Users() {
     })
   
     return (
-      <div>
+      <div className="container">
        
         <div className="col-xl-12">
             <table>
@@ -61,4 +61,3 @@ function Users() {
 
 
 
-export default Users;
