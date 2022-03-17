@@ -4,6 +4,7 @@ import './styles/App.css';
 import { Users } from './pages/users';
 import axios from 'axios';
 import { Login } from "./pages/login";
+import {User} from "./pages/user";
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
                         <Route path="/" element={<Login/>} />
                         <Route path="/users" element={<Users />}/>
                         <Route path="/user/:id" element={<User />} />
-                        
+
                     </Routes>
             </BrowserRouter>
 
