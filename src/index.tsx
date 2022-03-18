@@ -4,11 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme();
 
 
 ReactDOM.render(
-  <React.StrictMode>
+<MuiThemeProvider theme={theme}>
     <App />
-  </React.StrictMode>,
+</MuiThemeProvider>,
   document.getElementById('root')
 );
