@@ -1,10 +1,11 @@
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    width: 100%;
-    background: #e49ce7;
+    background: #7effc9;
     border: 1px solid white;
     box-shadow: 1px 1px 10px black;
+    margin-left: 5%;
+    width: 100%;
 }
 
 td, th {
