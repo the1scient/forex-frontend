@@ -82,3 +82,7 @@
 .content-container {
     padding-left: 220px;
 }
+
+#priceValue {
+    font-size: 25px;
+}

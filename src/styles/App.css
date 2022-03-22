@@ -4,3 +4,35 @@ body {
 a {
     text-decoration: none !important;
 }
+
+stonks {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 100%;
+    width: 100%;
+    animation: scroll 20s infinite linear;
+}
+
+.stonk {
+    white-space: nowrap;
+    margin: clamp(1rem, 10vmin, 50rem);
+    transition: color 500ms ease, font-size 300ms ease;
+}
+
+@keyframes scroll {
+    from {
+        left: 100%;
+    }
+    to {
+        left: -100%;
+    }
+}
+
+.up {
+    color: green;
+}
+
+.down {
+    color: red;
+}

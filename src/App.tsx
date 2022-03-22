@@ -8,27 +8,16 @@ import { Login } from "./pages/login";
 import {User} from "./pages/user";
 import {Home} from './pages/home';
 
-
 function App() {
-/**
-    const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
-        onOpen: () => console.log(`Connected to App WS`),
-        onMessage: () => {
-            if (lastJsonMessage) {
-                console.log(lastJsonMessage);
-            }
-        },
 
-        onError: (event) => { console.error(event); },
-        shouldReconnect: (closeEvent) => true,
-        reconnectInterval: 3000
-    });
+/**
+
 */
         return (
             <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home/>} />
-                        <Route path="/user/:id" element={<User />} />
+                        <Route path="/idk" element={<User />} />
                         <Route path="/trades" element={<Trades />}/>
                     </Routes>
             </BrowserRouter>

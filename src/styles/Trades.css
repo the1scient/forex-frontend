@@ -19,3 +19,10 @@ tr:nth-child(even) {
     background-color: #03152a;
     color: white !important;
 }
+
+
+.trade-table-title {
+    text-align: center;
+    color: #fff;
+}
+

@@ -1,45 +1,87 @@
-import React, {useEffect, useState} from 'react';
-import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import protobuf from 'protobufjs';
+const { Buffer } = require('buffer/');
 
-var data = require('../settings.json');
-let backEndHost = data['backendhost'];
-
-type RoomParams = {
-    id: string;
+const emojis = {
+    '': '',
+    'up': '🚀',
+    'down': '💩',
 }
 
+function formatPrice(price: number) {
+    return `$${price.toFixed(2)}`;
+}
 
 export function User() {
-    const params = useParams<RoomParams>();
-    const roomId = params.id;
-
-    const [user, setUser] = useState<any[]>( [] );
-
+    const [stonks, setStonks] = useState([]);
     useEffect(() => {
-        const fetchUser = async () => {
+        const params = new URLSearchParams(window.location.search);
+        const ws = new WebSocket('wss://streamer.finance.yahoo.com');
 
-            const response = await fetch(`${backEndHost}user/${params.id}`);
-            const userData = await response.json();
-            setUser(userData);
-            console.log(userData);
-        };
-        fetchUser();
+        protobuf.load('./YPricingData.proto', (error: any, root: any) => {
+            if (error) {
+                return console.log(error);
+            }
+            const Yaticker = root.lookupType('yaticker');
 
+            ws.onopen = function open() {
+                console.log('connected');
+                ws.send(
+                    JSON.stringify({
+                        subscribe: (params.get('symbols') || 'GME')
+                            .split(',')
+                            .map((symbol) => symbol.toUpperCase()),
+                    })
+                );
+            };
+
+            ws.onclose = function close() {
+                console.log('disconnected');
+            };
+
+            ws.onmessage = function incoming(message) {
+                const next = Yaticker.decode(new Buffer(message.data, 'base64'));
+                setStonks((current: any) => {
+                    let stonk = current.find((stonk: any) => stonk.id === next.id);
+                    if (stonk) {
+                        return current.map((stonk: any) => {
+                            if (stonk.id === next.id) {
+                                return {
+                                    ...next,
+                                    direction:
+                                        stonk.price == next.price
+                                            ? 'up'
+                                            : stonk.price > next.price
+                                                ? 'down'
+                                                : stonk.direction,
+                                };
+                            }
+                            return stonk;
+                        });
+                    } else {
+                        return [
+                            ...current,
+                            {
+                                ...next,
+                                direction: '',
+                            },
+                        ];
+                    }
+                });
+            };
+        });
     }, []);
 
-
-const useDatas: any = user;
-
-
-
-  return (
-      <div className="container">
-          <div className="row"> <h6>User ID: {params.id}  </h6>
-              <h5>{useDatas.name}</h5>
-          </div>
-
-      </div>
-  );
-
+    return (
+        <div className="stonks">
+            {stonks.map((stonk: any) => (
+                <div className="stonk" key={stonk.id}>
+                    <h2 className={stonk.direction}>
+                        {stonk.id} {formatPrice(stonk.price)}
+                    </h2>
+                </div>
+            ))}
+        </div>
+    );
 }
 
