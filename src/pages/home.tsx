@@ -4,50 +4,78 @@ import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 import {MenuItem} from "@mui/material";
 import useWebSocket from 'react-use-websocket';
+import websocket from 'isomorphic-ws';
+import protobuf from 'protobufjs';
 import {FormEvent, useState} from "react";
+
+const ws = new WebSocket('wss://streamer.finance.yahoo.com');
+
+
+// wss://marketdata.tradermade.com/feedadv
 
 let data = require('../settings.json');
 let backEndHost = data['backendhost'];
 
 
+
 export function Home() {
-    const ws = new WebSocket('wss://streamer.finance.yahoo.com')
+
+    const [price, setPrice] = useState(0);
+
+    const [counter, setCounter] = useState(0);
+
+  
+
+
+const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.tradermade.com/feedadv', {
+  onOpen: () => sendMessage("{\"userKey\":\"sioZfyXNXtuji47n2BMGA\", \"symbol\":\"GBPUSD\"}"),
+  onMessage: () => {
+    if (lastJsonMessage) {
+
+        new Date('DD/MM/YYYY');
+
+        let gbp_price: any = lastJsonMessage;
+        
+      console.log(gbp_price.mid);
+        
+        setPrice(gbp_price.mid);
+
+
+     // let asdasds = (document.getElementById('priceValue') as HTMLBodyElement).innerText = xmsg.mid;
+      
+
+
+    }
+    else {
+
+    }
+  },
+ 
+
+  onError: (event) => { console.error(event); },
+  shouldReconnect: (closeEvent) => true,
+  reconnectInterval: 3000
+});
 
 
 
-    /**
-    const api_key = '38e11401e6f0431c56232c8d7203e48b';
-    const { lastJsonMessage, sendMessage } = useWebSocket('wss://websockets.financialmodelingprep.com',  {
-        onOpen: () =>  sendMessage('heartbeat' + api_key),
-        onMessage: () => {
-            if (lastJsonMessage) {
-                console.log(lastJsonMessage);
-            }
-        },
-        onError: (event) => { console.error(event); },
-        shouldReconnect: (closeEvent) => true,
-        reconnectInterval: 3000
-    });
-
-
-*/
 
     async function handleMakeTrade(event: FormEvent) {
         event.preventDefault();
 
 
-        let type = (document.getElementById('select-type') as HTMLFormElement).value;
-        let amount = (document.getElementById('amount-quantity') as HTMLFormElement).value;
-
+        let typeElement = (document.getElementById('select-type') as HTMLFormElement).value;
+        let amountElement = (document.getElementById('amount-quantity') as HTMLFormElement).value;
+        
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 "instrument": "GBP/USD",
-                "rate": 1.31,
-                "type": type,
-                "amount": amount
+                "rate": price,
+                "type": typeElement,
+                "amount": amountElement
             })
         };
         const response = await fetch(backEndHost + `post`, requestOptions);
@@ -86,23 +114,23 @@ export function Home() {
 
                 <div className="container-fluid">
 
-
-                    <div className="jumbotron">
+                    <div className="jumbotron text-center">
 
                         <div className="col-md-10">
                         <h1>GBP -&gt; USD</h1>
-                        <p id="priceValue">00000</p>
 
-                            <form onSubmit={handleMakeTrade}>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="select-type">Choose a type</label>
+                        <h3 className="mt-3">{price} [{counter}s] </h3>
+
+                            <form onSubmit={handleMakeTrade} className='text-center'>
+                                <div className="form-group col-md-4 col-md-offset-6 mt-3 align-center">
+                                    <label htmlFor="select-type align-center">Choose a type</label>
                                     <select className="form-control" id="select-type">
                                         <option selected disabled>Choose a type</option>
                                         <option value="BUY">BUY</option>
                                         <option value="SELL">SELL</option>
                                     </select>
                                 </div>
-                                <div className="form-group col-md-6 mt-3">
+                                <div className="form-group col-md-4 mt-3">
                                     <label htmlFor="amount-quantity">Amount</label>
                                     <input min='0' step='1' type="number" className="form-control" id="amount-quantity"
                                            placeholder="Amount" />
@@ -114,7 +142,7 @@ export function Home() {
 
                         </div>
 
-
+                        
 
                     </div>
 
