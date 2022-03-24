@@ -19,7 +19,6 @@ function App() {
             <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home/>} />
-                        <Route path="/idk" element={<User />} />
                         <Route path="/trades" element={<Trades />}/>
                     </Routes>
             </BrowserRouter>
