@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import '../styles/Home.css';
 import {MenuItem} from "@mui/material";
 import useWebSocket from 'react-use-websocket';
-import websocket from 'isomorphic-ws';
-import protobuf from 'protobufjs';
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
+import Swal from 'sweetalert2'
 
-const ws = new WebSocket('wss://streamer.finance.yahoo.com');
+//const ws = new WebSocket('wss://streamer.finance.yahoo.com');
 
 
 // wss://marketdata.tradermade.com/feedadv
@@ -26,19 +25,24 @@ export function Home() {
 
   
 
-
-const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.tradermade.com/feedadv', {
-  onOpen: () => sendMessage("{\"userKey\":\"sioZfyXNXtuji47n2BMGA\", \"symbol\":\"GBPUSD\"}"),
+const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
+  onOpen: () => console.log('Connected to WS'),
   onMessage: () => {
     if (lastJsonMessage) {
-
-        new Date('DD/MM/YYYY');
-
-        let gbp_price: any = lastJsonMessage;
+       setCounter(counter + 1);
         
-      console.log(gbp_price.mid);
+      
+
+        const gbp_price: any = lastJsonMessage;
+
+
+
+      setPrice(gbp_price.mid);
+
+
+      
         
-        setPrice(gbp_price.mid);
+
 
 
      // let asdasds = (document.getElementById('priceValue') as HTMLBodyElement).innerText = xmsg.mid;
@@ -46,9 +50,7 @@ const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.traderma
 
 
     }
-    else {
 
-    }
   },
  
 
@@ -57,34 +59,118 @@ const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.traderma
   reconnectInterval: 3000
 });
 
+// create a function called makeBuyTrade that gets input with id amount-quantity
+
+async function makeBuyTrade() {
+    let getAmountInput = (document.getElementById('amount-quantity') as HTMLInputElement).value;
+ 
+   let amount = Number(getAmountInput);
+
+
+if(price == null || price == 0 || price == undefined){ 
+
+    Swal.fire({
+        title: 'Error',
+        text: 'Price is not available',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      })
+}
+
+
+   if(amount <= 0 || amount > 100000) {
+   
+    Swal.fire({
+        title: 'Error!',
+        text: 'Amount must be between 0 and 100000',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+    });
+
+    return;
+   }
 
 
 
-    async function handleMakeTrade(event: FormEvent) {
-        event.preventDefault();
+const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        "instrument": "GBP/USD",
+        "rate": price,
+        "type": "BUY",
+        "amount": amount
+
+}) };
+const response = await fetch(backEndHost + `post`, requestOptions);
+const data = await response.json();
+Swal.fire({
+    title: 'Success!',
+    text: 'Your trade has been placed',
+    icon: 'success',
+    confirmButtonText: 'Ok'
+})
 
 
-        let typeElement = (document.getElementById('select-type') as HTMLFormElement).value;
-        let amountElement = (document.getElementById('amount-quantity') as HTMLFormElement).value;
-        
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                "instrument": "GBP/USD",
-                "rate": price,
-                "type": typeElement,
-                "amount": amountElement
-            })
-        };
-        const response = await fetch(backEndHost + `post`, requestOptions);
-        const data = await response.json();
-        console.log(data);
+}
 
 
 
+async function makeSellTrade() {
+    let getAmountInput = (document.getElementById('amount-quantity') as HTMLInputElement).value;
+ 
+    let amount = Number(getAmountInput);
+ 
+    if(price == null || price == 0 || price == undefined){ 
+
+        Swal.fire({
+            title: 'Error',
+            text: 'Price is not available',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          })
     }
+    
+    
+       if(amount <= 0 || amount > 100000) {
+       
+        Swal.fire({
+            title: 'Error!',
+            text: 'Amount must be between 0 and 100000',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    
+        return;
+       }
+
+ 
+ const requestOptions = {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+         "instrument": "GBP/USD",
+         "rate": price,
+         "type": "SELL",
+         "amount": amount
+ 
+ }) };
+ const response = await fetch(backEndHost + `post`, requestOptions);
+ const data = await response.json();
+ Swal.fire({
+    title: 'Success!',
+    text: 'Your trade has been placed',
+    icon: 'success',
+    confirmButtonText: 'Ok'
+})
+
+
+}
+
+
+
+
+
 
     return (
         <>
@@ -112,33 +198,39 @@ const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.traderma
             </div>
             <div className="content-container">
 
-                <div className="container-fluid">
+                <div className="container-fluid text-center">
 
-                    <div className="jumbotron text-center">
+                    
 
                         <div className="col-md-10">
-                        <h1>GBP -&gt; USD</h1>
+                        <h3 className="mt-2 symbol">GBP &gt; USD</h3>
 
-                        <h3 className="mt-3">{price} [{counter}s] </h3>
+                        <h3 className="mt-5">{price} </h3><i className='text-white'>[{counter} update(s)]</i>
 
-                            <form onSubmit={handleMakeTrade} className='text-center'>
-                                <div className="form-group col-md-4 col-md-offset-6 mt-3 align-center">
-                                    <label htmlFor="select-type align-center">Choose a type</label>
-                                    <select className="form-control" id="select-type">
-                                        <option selected disabled>Choose a type</option>
-                                        <option value="BUY">BUY</option>
-                                        <option value="SELL">SELL</option>
-                                    </select>
+                                <div className="row">
+                                    
+                                <div className="col-md-4">
+
                                 </div>
-                                <div className="form-group col-md-4 mt-3">
-                                    <label htmlFor="amount-quantity">Amount</label>
-                                    <input min='0' step='1' type="number" className="form-control" id="amount-quantity"
+                                <div className="form-group text-center mt-4 col-md-4">
+                                    <label htmlFor="amount" className="form-group">Amount:</label>
+                                    <input min='0' step='1' type="number" className="bg-dark form-group tradeInput" id="amount-quantity"
                                            placeholder="Amount" />
                                 </div>
 
-                                <button type="submit" className="btn btn-primary mt-4">Submit</button>
-                            </form>
+                                </div>
 
+                            <div className='text-center'>
+                                <div className="form-group text-center mt-5">
+
+                                    <button type="button" onClick={makeSellTrade} className="form-group btn btn-danger p-5 tradeAction"><i className="fa fa-minus-circle"></i>&nbsp;SELL</button>
+                                    <button type="button" onClick={makeBuyTrade} className="form-group btn btn-success p-5 tradeAction"><i className="fa fa-plus-circle"></i>&nbsp;BUY</button>
+
+                                </div>
+                          
+
+                               
+                            </div>
 
                         </div>
 
@@ -146,10 +238,18 @@ const { lastJsonMessage, sendMessage } = useWebSocket('wss://marketdata.traderma
 
                     </div>
 
-                </div>
+                
             </div>
         </div>
         </>
 
     );
 }
+
+function componentDidMount() {
+    throw new Error('Function not implemented.');
+}
+function componentWillUnmount() {
+    throw new Error('Function not implemented.');
+}
+

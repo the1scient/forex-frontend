@@ -1,14 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
 
 body {
-    
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
 }
+
 h3 {
     color: white;
-    text-shadow: 5px 3px 3px darkblue;
-    font-size: 30px !important;
+    text-shadow: 5px 3px 3px #921515;
+    font-size: 50px !important;
     text-align: center;
+}
+
+.symbol {
+    color: white !important;
+}
+
+.tradeInput {
+    color: #fff !important;
+    font-weight: 300 !important;
+    text-shadow: 0px 0px 0px black !important;
+    text-align: center !important;
+}
+
+.tradeAction {
+    margin: 5px;
 }
 
 .form-group {
@@ -24,7 +39,7 @@ h3 {
     left: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    background: #1a1a1a;
+    background: linear-gradient(0deg, #1a1a1a 50%, #333 50%);
     color: #fff;
 }
 
@@ -35,7 +50,7 @@ h3 {
 .sidebar-logo {
     padding: 10px 15px 10px 30px;
     font-size: 20px;
-    background-color: #2574A9;
+    background-color: #300e0e;
 }
 
 .sidebar-navigation {
@@ -71,7 +86,11 @@ h3 {
 }
 
 .sidebar-navigation li::before {
-    background-color: #2574A9;
+    /** background-color: #2574A9; */
+
+    /** choose a cool background color */
+    background-color: #300e0e;
+
     position: absolute;
     content: '';
     height: 100%;

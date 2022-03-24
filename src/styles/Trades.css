@@ -1,23 +1,25 @@
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    background: #7effc9;
+    background: #fff;
     border: 1px solid white;
-    box-shadow: 1px 1px 10px black;
+    box-shadow: 3px 1px 10px black;
     margin-left: 5%;
     width: 100%;
 }
 
-td, th {
+tbody {
     font-weight: bold;
     border: 1px solid #333;
     text-align: left;
-    padding: 8px;
-}
+    padding: 1rem;
+    color: #fff;
 
-tr:nth-child(even) {
-    background-color: #03152a;
-    color: white !important;
+   
+}
+tbody>tr, th {
+    padding: 1rem;
+    border: 1px double black;
 }
 
 

@@ -43,7 +43,9 @@
     "save": "^2.4.0",
     "stream": "^0.0.2",
     "stream-browserify": "^3.0.0",
+    "sweetalert2": "^11.4.7",
     "tls": "^0.0.1",
+    "ts-jest": "^27.1.4",
     "typescript": "^4.4.2",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.9",
@@ -56,7 +58,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll --verbose --detectOpenHandles --maxWorkers=1",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -76,5 +78,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-jest": "^27.5.1",
+    "jest": "^27.5.1",
+    "react-test-renderer": "^17.0.2"
   }
 }

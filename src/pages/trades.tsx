@@ -20,9 +20,6 @@ export function Trades() {
         const tradesData = await response.json();
         setTrades(tradesData);
       };
-
-
-
         fetchTrades();
     }, []);
   
@@ -30,16 +27,22 @@ export function Trades() {
 
       Moment.locale('en');
       let tradeTime = trade.time;
+        // if trade.type equals to buy bg equals success else bg equals warning
+        let type = trade.type === 'BUY' ? 'success' : 'warning';
+    
 
-      return <tr>
-                <td>{trade._id}</td>
-                <td>{Moment(tradeTime).format('DD/MM/YYYY HH:mm')}</td>
-                 <td>{trade.instrument}</td>
-                <td>{trade.rate}</td>
-                <td id="trade-type">{trade.type}</td>
-                <td>{trade.amount}</td>
 
-            </tr>
+
+
+      return <tr className={'bg-' + type}>
+              <td >{trade._id}</td>
+              <td>{Moment(tradeTime).format('DD/MM/YYYY HH:mm')}</td>
+              <td>{trade.instrument}</td>
+              <td>{trade.rate}</td>
+              <td id="trade-type">{trade.type}</td>
+              <td>{trade.amount}</td>
+
+          </tr>
     });
 
 
@@ -79,8 +82,8 @@ export function Trades() {
 
                         <div className="jumbotron">
 
-                            <h3 className="trade-table-title">Sorting by new records</h3>
-                            <table className="col-md-10">
+                            <h2 className="trade-table-title">Sorting by new records</h2>
+                            <table className="col-md-11">
 
                                 <thead>
                                 <tr>
