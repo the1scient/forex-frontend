@@ -10,8 +10,16 @@ let backEndHost = data['backendhost'];
 
 export function Trades() {
 
-    
-    const [trades, setTrades] = useState<any[]>( [] );
+    type tradeProps = {
+        _id: string,
+        time: string,
+        instrument: string,
+        rate: number,
+        type: string,
+        amount: number
+    }
+
+    const [trades, setTrades] = useState<tradeProps[]>( [] );
   
     useEffect(() => {
       const fetchTrades = async () => {

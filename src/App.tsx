@@ -7,10 +7,7 @@ import axios from 'axios';
 import {Home} from './pages/home';
 
 
-
 function App() {
-
-    
 
 /**
 
@@ -25,10 +22,6 @@ function App() {
 
         );
     }
-
- 
-
-
 
 
 export default App;

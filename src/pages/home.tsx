@@ -31,15 +31,15 @@ const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
     if (lastJsonMessage) {
        setCounter(counter + 1);
         
-      
+    
+        const mid = lastJsonMessage['mid'];
+        setPrice(mid);
 
+    /** 
         const gbp_price: any = lastJsonMessage;
+        setPrice(gbp_price.mid);
 
-
-
-      setPrice(gbp_price.mid);
-
-
+*/
       
         
 
@@ -103,7 +103,6 @@ const requestOptions = {
 
 }) };
 const response = await fetch(backEndHost + `post`, requestOptions);
-const data = await response.json();
 Swal.fire({
     title: 'Success!',
     text: 'Your trade has been placed',
@@ -156,7 +155,6 @@ async function makeSellTrade() {
  
  }) };
  const response = await fetch(backEndHost + `post`, requestOptions);
- const data = await response.json();
  Swal.fire({
     title: 'Success!',
     text: 'Your trade has been placed',
@@ -245,11 +243,3 @@ async function makeSellTrade() {
 
     );
 }
-
-function componentDidMount() {
-    throw new Error('Function not implemented.');
-}
-function componentWillUnmount() {
-    throw new Error('Function not implemented.');
-}
-
