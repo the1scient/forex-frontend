@@ -32,6 +32,7 @@
     "jest-websocket-mock": "^2.3.0",
     "moment": "^2.29.1",
     "net": "^1.0.2",
+    "next": "^12.1.2",
     "nodemon": "^2.0.15",
     "process": "^0.11.10",
     "protobufjs": "^6.11.2",

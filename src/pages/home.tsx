@@ -23,31 +23,46 @@ export function Home() {
 
     const [counter, setCounter] = useState(0);
 
+    const [percent, setPercent] = useState(0);
   
+    const [symbol, setSymbol] = useState('GBP > USD');
+
 
 const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
   onOpen: () => console.log('Connected to WS'),
   onMessage: () => {
     if (lastJsonMessage) {
-       setCounter(counter + 1);
+       
         
-    
-        const mid = lastJsonMessage['mid'];
-        setPrice(mid);
+        type priceProps = {
+            price: string;
+        }
 
-    /** 
-        const gbp_price: any = lastJsonMessage;
-        setPrice(gbp_price.mid);
+        const resSymbol = lastJsonMessage.id;
 
-*/
-      
+        let xSymbol = '';
+
+        if(resSymbol === "GBPUSD=X"){
+            xSymbol = 'GBP > USD';
+        }
+        else if (resSymbol === 'GBP=X') {
+            xSymbol = 'USD > GBP';
+        }
+
+
+        if(xSymbol === symbol){
+            
+            const price = lastJsonMessage['price'];
+       
+            setPrice(price);      
+            setPercent(Math.round(lastJsonMessage['changePercent'] * 100) / 100);
+            setCounter(counter + 1);
+        }
+        else {
+            
+        }
         
-
-
-
-     // let asdasds = (document.getElementById('priceValue') as HTMLBodyElement).innerText = xmsg.mid;
-      
-
+       
 
     }
 
@@ -96,7 +111,7 @@ const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-        "instrument": "GBP/USD",
+        "instrument": symbol,
         "rate": price,
         "type": "BUY",
         "amount": amount
@@ -113,6 +128,18 @@ Swal.fire({
 
 }
 
+
+function readjust() {
+    
+    // if tradeSymbol equals USD > GBP than tradeSymbol receives GBP > USD
+    if(symbol == "USD > GBP"){
+        setSymbol("GBP > USD");
+    }
+    else {
+        setSymbol("USD > GBP");
+    }
+    
+}
 
 
 async function makeSellTrade() {
@@ -148,7 +175,7 @@ async function makeSellTrade() {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({
-         "instrument": "GBP/USD",
+         "instrument": symbol,
          "rate": price,
          "type": "SELL",
          "amount": amount
@@ -164,9 +191,6 @@ async function makeSellTrade() {
 
 
 }
-
-
-
 
 
 
@@ -201,9 +225,9 @@ async function makeSellTrade() {
                     
 
                         <div className="col-md-10">
-                        <h3 className="mt-2 symbol">GBP &gt; USD</h3>
+                        <h3 className="mt-2 symbol" id="tradeSymbol">{symbol}  </h3><button onClick={readjust} className="text-white bg-danger border-dark rounded"><i className="fa fa-sync" aria-hidden="true"></i></button>
 
-                        <h3 className="mt-5">{price} </h3><i className='text-white'>[{counter} update(s)]</i>
+                        <h3 style={{display: 'inline-block;'}} className="mt-5">{price} ({percent}) </h3> <i className='text-white'>[{counter} update(s)]</i>
 
                                 <div className="row">
                                     
@@ -213,7 +237,7 @@ async function makeSellTrade() {
                                 <div className="form-group text-center mt-4 col-md-4">
                                     <label htmlFor="amount" className="form-group">Amount:</label>
                                     <input min='0' step='1' type="number" className="bg-dark form-group tradeInput" id="amount-quantity"
-                                           placeholder="Amount" />
+                                           placeholder="Insert an amount..." />
                                 </div>
 
                                 </div>

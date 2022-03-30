@@ -11,7 +11,7 @@ let backEndHost = data['backendhost'];
 export function Trades() {
 
     type tradeProps = {
-        _id: string,
+        id: number,
         time: string,
         instrument: string,
         rate: number,
@@ -35,15 +35,18 @@ export function Trades() {
 
       Moment.locale('en');
       let tradeTime = trade.time;
+        
+     
+
         // if trade.type equals to buy bg equals success else bg equals warning
-        let type = trade.type === 'BUY' ? 'success' : 'warning';
+        let type = trade.type.replace(/['"]+/g, '') === 'BUY' ? 'success' : 'warning';
     
 
 
 
 
       return <tr className={'bg-' + type}>
-              <td >{trade._id}</td>
+              <td >{trade.id}</td>
               <td>{Moment(tradeTime).format('DD/MM/YYYY HH:mm')}</td>
               <td>{trade.instrument}</td>
               <td>{trade.rate}</td>
