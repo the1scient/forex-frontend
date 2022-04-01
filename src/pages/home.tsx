@@ -1,10 +1,7 @@
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
 import { Link } from 'react-router-dom';
 import '../styles/Home.css';
-import {MenuItem} from "@mui/material";
 import useWebSocket from 'react-use-websocket';
-import {FormEvent, useEffect, useState} from "react";
+import {useState} from "react";
 import Swal from 'sweetalert2'
 
 //const ws = new WebSocket('wss://streamer.finance.yahoo.com');
@@ -35,7 +32,7 @@ const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
        
         
         type priceProps = {
-            price: string;
+           price: string;
         }
 
         const resSymbol = lastJsonMessage.id;
@@ -58,11 +55,11 @@ const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
             setPercent(Math.round(lastJsonMessage['changePercent'] * 100) / 100);
             setCounter(counter + 1);
         }
+        
         else {
             
         }
-        
-       
+         
 
     }
 
@@ -72,6 +69,8 @@ const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
   onError: (event) => { console.error(event); },
   shouldReconnect: (closeEvent) => true,
   reconnectInterval: 3000
+
+
 });
 
 // create a function called makeBuyTrade that gets input with id amount-quantity
@@ -79,17 +78,17 @@ const { lastJsonMessage, sendMessage } = useWebSocket('ws://localhost:3001', {
 async function makeBuyTrade() {
     let getAmountInput = (document.getElementById('amount-quantity') as HTMLInputElement).value;
  
-   let amount = Number(getAmountInput);
+    let amount = Number(getAmountInput);
 
 
-if(price == null || price == 0 || price == undefined){ 
+    if(price == null || price == 0 || price == undefined){ 
 
     Swal.fire({
         title: 'Error',
         text: 'Price is not available',
         icon: 'error',
         confirmButtonText: 'Ok'
-      })
+      });
 }
 
 
@@ -107,23 +106,25 @@ if(price == null || price == 0 || price == undefined){
 
 
 
-const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        "instrument": symbol,
-        "rate": price,
-        "type": "BUY",
-        "amount": amount
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            "instrument": symbol,
+            "rate": price,
+            "type": "BUY",
+            "amount": amount
 
-}) };
-const response = await fetch(backEndHost + `post`, requestOptions);
-Swal.fire({
-    title: 'Success!',
-    text: 'Your trade has been placed',
-    icon: 'success',
-    confirmButtonText: 'Ok'
-})
+    })
+    };
+
+    const response = await fetch(backEndHost + `post`, requestOptions);
+    Swal.fire({
+        title: 'Success!',
+        text: 'Your trade has been placed',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    });
 
 
 }
@@ -168,10 +169,11 @@ async function makeSellTrade() {
         });
     
         return;
+        
        }
 
  
- const requestOptions = {
+     const requestOptions = {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
      body: JSON.stringify({
@@ -181,13 +183,13 @@ async function makeSellTrade() {
          "amount": amount
  
  }) };
- const response = await fetch(backEndHost + `post`, requestOptions);
- Swal.fire({
-    title: 'Success!',
-    text: 'Your trade has been placed',
-    icon: 'success',
-    confirmButtonText: 'Ok'
-})
+    const response = await fetch(backEndHost + `post`, requestOptions);
+    Swal.fire({
+        title: 'Success!',
+        text: 'Your trade has been placed',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    })
 
 
 }
@@ -195,7 +197,7 @@ async function makeSellTrade() {
 
 
     return (
-        <>
+        
             <div>
                 <div className="sidebar-container">
                     <div className="sidebar-logo">
@@ -214,26 +216,21 @@ async function makeSellTrade() {
                           </Link>
                         </li>
                         {/**<li className="header">Another Menu Header</li> */}
-
-
-                </ul>
-            </div>
-            <div className="content-container">
-
-                <div className="container-fluid text-center">
+                    </ul>
+                </div>
+                <div className="content-container">
+                    <div className="container-fluid text-center">
 
                     
 
                         <div className="col-md-10">
-                        <h3 className="mt-2 symbol" id="tradeSymbol">{symbol}  </h3><button onClick={readjust} className="text-white bg-danger border-dark rounded"><i className="fa fa-sync" aria-hidden="true"></i></button>
+                            <h3 className="mt-2 symbol" id="tradeSymbol">{symbol}  </h3><button onClick={readjust} className="text-white bg-danger border-dark rounded"><i className="fa fa-sync" aria-hidden="true"></i></button>
 
-                        <h3 style={{display: 'inline-block;'}} className="mt-5">{price} ({percent}) </h3> <i className='text-white'>[{counter} update(s)]</i>
+                            <h3 style={{display: 'inline-block;'}} className="mt-5">{price} ({percent}) </h3> <i className='text-white'>[{counter} update(s)]</i>
 
                                 <div className="row">
                                     
-                                <div className="col-md-4">
-
-                                </div>
+                                <div className="col-md-4"></div> {/* empty div for bootstrap */}
                                 <div className="form-group text-center mt-4 col-md-4">
                                     <label htmlFor="amount" className="form-group">Amount:</label>
                                     <input min='0' step='1' type="number" className="bg-dark form-group tradeInput" id="amount-quantity"
@@ -243,12 +240,12 @@ async function makeSellTrade() {
                                 </div>
 
                             <div className='text-center'>
-                                <div className="form-group text-center mt-5">
+                                    <div className="form-group text-center mt-5">
 
-                                    <button type="button" onClick={makeSellTrade} className="form-group btn btn-danger p-5 tradeAction"><i className="fa fa-minus-circle"></i>&nbsp;SELL</button>
-                                    <button type="button" onClick={makeBuyTrade} className="form-group btn btn-success p-5 tradeAction"><i className="fa fa-plus-circle"></i>&nbsp;BUY</button>
+                                        <button type="button" onClick={makeSellTrade} className="form-group btn btn-danger p-5 tradeAction"><i className="fa fa-minus-circle"></i>&nbsp;SELL</button>
+                                        <button type="button" onClick={makeBuyTrade} className="form-group btn btn-success p-5 tradeAction"><i className="fa fa-plus-circle"></i>&nbsp;BUY</button>
 
-                                </div>
+                                    </div>
                           
 
                                
@@ -258,12 +255,12 @@ async function makeSellTrade() {
 
                         
 
-                    </div>
+                        </div>
 
                 
             </div>
         </div>
-        </>
+        
 
     );
 }

@@ -33,7 +33,8 @@ export function Trades() {
   
   const useTrades = trades.map((trade)=> {
 
-      Moment.locale('en');
+      Moment.locale('pt-BR');
+      console.log(Moment.locale('pt-BR'));
       let tradeTime = trade.time;
         
      
@@ -47,7 +48,7 @@ export function Trades() {
 
       return <tr className={'bg-' + type}>
               <td >{trade.id}</td>
-              <td>{Moment(tradeTime).format('DD/MM/YYYY HH:mm')}</td>
+              <td>{Moment(tradeTime).subtract(3, 'hours').format('DD/MM/YYYY HH:mm')}</td>
               <td>{trade.instrument}</td>
               <td>{trade.rate}</td>
               <td id="trade-type">{trade.type}</td>
