@@ -3,11 +3,9 @@ import '../styles/Home.css';
 import useWebSocket from 'react-use-websocket';
 import {useState} from "react";
 import Swal from 'sweetalert2'
+import { useTranslation } from 'react-i18next';
+import {Sidebar} from '../components/Sidebar';
 
-//const ws = new WebSocket('wss://streamer.finance.yahoo.com');
-
-
-// wss://marketdata.tradermade.com/feedadv
 
 let data = require('../settings.json');
 let backEndHost = data['backendhost'];
@@ -15,6 +13,9 @@ let backEndHost = data['backendhost'];
 
 
 export function Home() {
+    
+    const { t, i18n } = useTranslation('common');
+
 
     const [price, setPrice] = useState(0);
 
@@ -199,25 +200,7 @@ async function makeSellTrade() {
     return (
         
             <div>
-                <div className="sidebar-container">
-                    <div className="sidebar-logo">
-                        Forex Dashboard
-                    </div>
-                    <ul className="sidebar-navigation">
-                        <li className="header">Navigation</li>
-                        <li>
-                            <Link to='/'>
-                                <i className="fa fa-home" aria-hidden="true" />Home
-                            </Link>
-                         </li>
-                        <li>
-                          <Link to='/trades'>
-                                <i className="fa fa-history" aria-hidden="true"/> My Trades
-                          </Link>
-                        </li>
-                        {/**<li className="header">Another Menu Header</li> */}
-                    </ul>
-                </div>
+                <Sidebar />
                 <div className="content-container">
                     <div className="container-fluid text-center">
 

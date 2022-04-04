@@ -2,13 +2,20 @@ import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import '../styles/Trades.css';
 import Moment from 'moment';
-import Menu from "@mui/material/Menu";
-import {MenuItem} from "@mui/material";
+import { useTranslation } from 'react-i18next';
+import {Sidebar} from '../components/Sidebar';
 
 let data = require('../settings.json');
 let backEndHost = data['backendhost'];
 
+
+
+
 export function Trades() {
+
+    const { t, i18n } = useTranslation('common');
+
+
 
     type tradeProps = {
         id: number,
@@ -66,27 +73,7 @@ export function Trades() {
 
         <>
             <div>
-                <div className="sidebar-container">
-                    <div className="sidebar-logo">
-                        Forex Dashboard
-                    </div>
-                    <ul className="sidebar-navigation">
-                        <li className="header">Navigation</li>
-                        <li>
-                            <Link to='/'>
-                                <i className="fa fa-home" aria-hidden="true" />Home
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to='/trades'>
-                                <i className="fa fa-history" aria-hidden="true"/> My Trades
-                            </Link>
-                        </li>
-                        {/**<li className="header">Another Menu Header</li> */}
-
-
-                    </ul>
-                </div>
+                <Sidebar />
                 <div className="content-container">
 
                     <div className="container-fluid">
