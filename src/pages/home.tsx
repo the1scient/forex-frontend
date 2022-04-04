@@ -209,15 +209,15 @@ async function makeSellTrade() {
                         <div className="col-md-10">
                             <h3 className="mt-2 symbol" id="tradeSymbol">{symbol}  </h3><button onClick={readjust} className="text-white bg-danger border-dark rounded"><i className="fa fa-sync" aria-hidden="true"></i></button>
 
-                            <h3 style={{display: 'inline-block;'}} className="mt-5">{price} ({percent}) </h3> <i className='text-white'>[{counter} update(s)]</i>
+                            <h3 style={{display: 'inline-block;'}} className="mt-5">{price} ({percent}) </h3> <i className='text-white'>[{counter} {t('trades.updates')}(s)]</i>
 
                                 <div className="row">
                                     
                                 <div className="col-md-4"></div> {/* empty div for bootstrap */}
                                 <div className="form-group text-center mt-4 col-md-4">
-                                    <label htmlFor="amount" className="form-group">Amount:</label>
+                                    <label htmlFor="amount" className="form-group">{t('trades.amount')}:</label>
                                     <input min='0' step='1' type="number" className="bg-dark form-group tradeInput" id="amount-quantity"
-                                           placeholder="Insert an amount..." />
+                                           placeholder={t('trades.amountInput') + '...'} />
                                 </div>
 
                                 </div>
@@ -225,8 +225,8 @@ async function makeSellTrade() {
                             <div className='text-center'>
                                     <div className="form-group text-center mt-5">
 
-                                        <button type="button" onClick={makeSellTrade} className="form-group btn btn-danger p-5 tradeAction"><i className="fa fa-minus-circle"></i>&nbsp;SELL</button>
-                                        <button type="button" onClick={makeBuyTrade} className="form-group btn btn-success p-5 tradeAction"><i className="fa fa-plus-circle"></i>&nbsp;BUY</button>
+                                        <button type="button" onClick={makeSellTrade} className="form-group btn btn-danger p-5 tradeAction"><i className="fa fa-minus-circle"></i>&nbsp;{t('trades.sell')}</button>
+                                        <button type="button" onClick={makeBuyTrade} className="form-group btn btn-success p-5 tradeAction"><i className="fa fa-plus-circle"></i>&nbsp;{t('trades.buy')}</button>
 
                                     </div>
                           

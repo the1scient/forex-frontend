@@ -3,5 +3,13 @@
         "menu.title": "Navegação",
         "home": "Início",
         "trades": "Minhas negociações"
+    },
+    "trades": {
+        "updates": "atualizações",
+        "amount": "Quantidade",
+        "amountInput": "Insira uma quantidade",
+        "sell": "VENDER",
+        "buy": "COMPRAR",
+        "sorting": "Ordenando por registros mais recentes"
     }
 }

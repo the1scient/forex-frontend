@@ -81,7 +81,7 @@ export function Trades() {
 
                         <div className="jumbotron">
 
-                            <h2 className="trade-table-title">Sorting by new records</h2>
+                            <h2 className="trade-table-title">{t('trades.sorting')}</h2>
                             <table className="col-md-11">
 
                                 <thead>

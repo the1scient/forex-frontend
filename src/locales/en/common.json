@@ -3,5 +3,13 @@
         "menu.title": "Navigation",
         "home": "Home",
         "trades": "My Trades"
+    },
+    "trades": {
+        "updates": "updates",
+        "amount": "Amount",
+        "amountInput": "Insert an amount",
+        "sell": "SELL",
+        "buy": "BUY",
+        "sorting": "Sorting by new records"
     }
 }
